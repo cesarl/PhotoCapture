@@ -4,6 +4,7 @@
 #include				<gphoto2/gphoto2.h>
 #include				<allegro5/allegro.h>
 #include				<sys/types.h>
+#include				<dirent.h>
 #include				<sys/stat.h>
 #include				<fcntl.h>
 #include				<list>
@@ -36,11 +37,11 @@ public:
     // build path
     id = _onTestMode ? _testCounter++ : _counter++;
     if (!_onTestMode)
-      path = _destinationFolder + "frame-" + std::to_string(id) + ".jpg";
+      path = _destinationFolder + "frame_" + std::to_string(id) + ".jpg";
     else
-      path = _destinationFolder + "frame-" + std::to_string(id) + ".jpg";
+      path = _destinationFolder + "TEST_frame_" + std::to_string(id) + ".jpg";
 
-    // copy image frome camera to path
+    // copy image from camera to path
     fd = open(path.c_str(), O_CREAT | O_WRONLY, 0644);
     logAndQuit(fd < 0, "error oppening fd");
     logAndQuit(gp_file_new_from_fd(&file, fd) < 0, "error file from fd");
@@ -60,11 +61,72 @@ public:
     pub(key, frameInfo);
   }
 
+  void					setDestinationFolder(const std::string &path)
+  {
+    // reset values
+    _list.clear();
+    _testCounter = 0;
+    _counter = 0;
+    _destinationFolder = path;
+
+    // ckeck if directory exists or create it
+    ALLEGRO_FS_ENTRY *fs = al_create_fs_entry(path.c_str());
+    if (!logAndQuit(fs == nullptr, "Allegro FS creation failed"))
+      return;
+    if (!al_fs_entry_exists(fs))
+      {
+	if (!logAndQuit(!al_make_directory(path.c_str()), "Directory creation failed"))
+	  return;
+      }
+
+    // scan directory
+    DIR					*dir;
+    struct dirent			*ent;
+
+    dir = opendir(path.c_str());
+    if (!logAndQuit(dir == nullptr, "Failed to open new destination dir"))
+      return;
+    while ((ent = readdir(dir)) != nullptr)
+      {
+	std::string name(ent->d_name);
+	if(name.substr(name.find_last_of(".") + 1) == "jpg"
+	   && name.find("TEST") == std::string::npos)
+	  {
+	    unsigned int imageId = 0;
+	    std::string strId = name.substr(0, name.size() - 4);
+	    strId = name.substr(6, name.size() - 6);
+	    imageId = std::stoul(strId);
+	    if (imageId >= _counter)
+	      {
+		_counter = imageId + 1;
+
+		// register image information in list
+		FrameInfo frameInfo(name, imageId, false);
+		_list.push_back(frameInfo);
+
+		// inform others about new frame
+		// PubSubKey key("newFrame");
+		// pub(key, frameInfo);
+	      }
+	  }
+      }
+    closedir(dir);
+  }
+
   bool					init()
   {
     sub("newImageCaptured", [&](CameraFilePath *infos, GPContext *context, Camera *camera){
 	copyImageToFolder(infos, context, camera);
       });
+
+    sub("setDestinationFolder", [&](const std::string path){
+	setDestinationFolder(path);
+      });
+
+    // for test purpose
+    PubSubKey key("setDestinationFolder");
+    const std::string testPath("/tmp/testFolder/");
+    pub(key, testPath);
 
     return true;
   }

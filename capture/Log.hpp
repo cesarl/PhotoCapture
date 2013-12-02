@@ -3,13 +3,14 @@
 
 #include				"PubSub.hpp"
 
-void logAndQuit(bool val, const std::string &message)
+bool logAndQuit(bool val, const std::string &message)
 {
   if (!val)
-    return;
+    return true;
   std::cerr << message << std::endl;
   PubSubKey key("stopRunning");
   PubSub::pub(key);
+  return false;
 }
 
 #endif					//__LOG_HPP__
