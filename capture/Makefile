@@ -1,13 +1,13 @@
 NAME		=	exec
 
-CC		=	g++
+CC		=	g++-4.8
 
 RM		=	rm -f
 
-CPPFLAGS	=	-std=gnu++0x -W -Wextra -Wall -Werror -O2
+CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror
 
 CPPFLAGS	+=	-I.
-LDFLAGS		=	-L/usr/lib -lgphoto2 
+LDFLAGS		=	-L/usr/lib -lgphoto2 -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image -lGLU
 
 INC		=	-I/usr/include/allegro5
 

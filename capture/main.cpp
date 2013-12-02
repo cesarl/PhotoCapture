@@ -1,14 +1,11 @@
 #include <cstdlib>
-#include "CapCamera.hpp"
+#include "Core.hpp"
 
 int main(void)
 {
-  CapCamera camera;
+  Core core;
 
-  camera.init();
-
-  bool run = true;
-  camera.waitForCapture(run);
-
+  core.init();
+  core.run();
   return EXIT_SUCCESS;
 }
