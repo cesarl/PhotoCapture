@@ -99,15 +99,14 @@ public:
 	    if (imageId >= _counter)
 	      {
 		_counter = imageId + 1;
-
-		// register image information in list
-		FrameInfo frameInfo(name, imageId, false);
-		_list.push_back(frameInfo);
-
-		// inform others about new frame
-		// PubSubKey key("newFrame");
-		// pub(key, frameInfo);
 	      }
+	    // register image information in list
+	    FrameInfo frameInfo(path + name, imageId, false);
+	    _list.push_back(frameInfo);
+
+	    // inform others about new frame
+	    PubSubKey key("existingFrame");
+	    pub(key, frameInfo);
 	  }
       }
     closedir(dir);

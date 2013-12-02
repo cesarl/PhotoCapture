@@ -15,7 +15,7 @@ public:
     _bmp = al_load_bitmap(path.c_str());
     if (!_bmp)
       {
-	std::cerr << "error loading waiting image" << std::endl;
+	std::cerr << "error loading image : " << path << std::endl;
       }
     else
       {

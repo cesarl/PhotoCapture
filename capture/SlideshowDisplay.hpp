@@ -42,6 +42,10 @@ public:
 	newFrame(infos);
       });
 
+    sub("existingFrame", [&](FrameInfo infos){
+	existingFrame(infos);
+      });
+
     return true;
   }
 
@@ -79,6 +83,12 @@ public:
     _counter = _delay;
     _last = al_get_time();
     update();
+  }
+
+  void					existingFrame(FrameInfo &infos)
+  {
+    _list.push_back(infos);
+    std::cout << "existingFrame" << std::endl;
   }
 
 private:
