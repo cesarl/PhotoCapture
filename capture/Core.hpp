@@ -91,6 +91,7 @@ public:
 	  }
 	PubSubKey getCaptureKey("updateCapture");
 	pub(getCaptureKey);
+	_captureDisplay.update();
       }
   }
 
