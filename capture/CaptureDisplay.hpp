@@ -6,6 +6,7 @@
 #include				"PubSub.hpp"
 #include				"Log.hpp"
 #include				"Image.hpp"
+#include				"FrameInfo.hpp"
 
 class					CaptureDisplay : public PubSub
 {
@@ -16,6 +17,7 @@ public:
     , _currentImage(new Image())
     , _counter(0.0f)
     , _delay(3.0f)
+    , _last(0.0f)
   {}
 
   virtual ~CaptureDisplay()
@@ -35,6 +37,14 @@ public:
     sub("setWaitingImage", [&](std::string path){
 	setWaitingImage(path);
       });
+
+    sub("newFrame", [&](FrameInfo infos){
+	newFrame(infos);
+      });
+
+
+    //for test purposes
+    setWaitingImage("./assets/defaultWaitingPicture.png");
     return true;
   }
 
@@ -45,18 +55,31 @@ public:
 
   void					update()
   {
+    al_set_target_backbuffer(_display);
+    al_clear_to_color(al_map_rgb(0,255,0));
+    std::cout << _counter << std::endl;
     if (_counter <= 0.0f)
       {
 	_waitingImage->display();
       }
     else
       {
-	static float last = al_get_time();
-	float d = al_get_time() - last;
+	float d = al_get_time() - _last;
 	_counter -= d;
 	_currentImage->display();
-	last = al_get_time();
+	_last = al_get_time();
       }
+    al_flip_display();
+  }
+
+  void					newFrame(FrameInfo &infos)
+  {
+    std::cout << "ca load" << std::endl;
+    _currentImage = std::unique_ptr<Image>(new Image(infos.path));
+    std::cout << "ca a loade" << std::endl;
+    _counter = _delay;
+    _last = al_get_time();
+    update();
   }
 
 private:
@@ -65,6 +88,7 @@ private:
   std::unique_ptr<Image>		_currentImage;
   float					_counter;
   float					_delay;
+  float					_last;
 };
 
 #endif					//__CAPTURE_DISPLAY_HPP__

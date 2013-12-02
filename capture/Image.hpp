@@ -38,7 +38,10 @@ public:
   }
 
   virtual ~Image()
-  {}
+  {
+    if (_bmp)
+      al_destroy_bitmap(_bmp);
+  }
 
 private:
   ALLEGRO_BITMAP			*_bmp;

@@ -40,6 +40,7 @@ public:
   CameraCtx()
     : _camera(nullptr)
     , _context(nullptr)
+    , _refreshDelay(100)
   {}
   
   virtual ~CameraCtx()
@@ -68,14 +69,14 @@ public:
 	CameraEventType			type;
 	void				*data;
 
-	gp_camera_wait_for_event(_camera, _refeshDelay, &type, &data, _context);
+	gp_camera_wait_for_event(_camera, _refreshDelay, &type, &data, _context);
 	if (type == GP_EVENT_FILE_ADDED)
 	  {
 	    PubSubKey key("newImageCaptured");
 	    CameraFilePath *fileInfos = static_cast<CameraFilePath*>(data);
-	    pub(key, fileInfos, _context, _camera);
 	    std::cout << "Capture !!!" << std::endl;
 	    std::cout <<fileInfos->name << " " << fileInfos->folder << std::endl;
+	    pub(key, fileInfos, _context, _camera);
 	  }	
       });
 
@@ -104,25 +105,25 @@ public:
       break;
     }
     else if (type == GP_EVENT_CAPTURE_COMPLETE) {
-      waittime = 100;
+      waittime = 10;
     }
   }
   }
 
   void setRefreshDelay(const unsigned int delay)
   {
-    _refeshDelay = delay;
+    _refreshDelay = delay;
   }
 
   unsigned int getRefreshDelay() const
   {
-    return _refeshDelay;
+    return _refreshDelay;
   }
 
 private:
   Camera				*_camera;
   GPContext				*_context;
-  unsigned int				_refeshDelay;
+  unsigned int				_refreshDelay;
 private:
 };
 
