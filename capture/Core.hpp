@@ -82,6 +82,11 @@ public:
 	      {
 		PubSubKey key("keyUp");
 		pub(key, event);
+		if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+		  {
+		    _running = false;
+		    return;
+		  }
 	      }
 	    else if (event.type == ALLEGRO_EVENT_KEY_DOWN)
 	      {
@@ -89,8 +94,7 @@ public:
 		pub(key, event);
 	      }
 	  }
-	PubSubKey getCaptureKey("updateCapture");
-	pub(getCaptureKey);
+	_cameraContext.update();
 	_captureDisplay.update();
       }
   }

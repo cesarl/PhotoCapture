@@ -65,21 +65,6 @@ public:
 	  }
       });
 
-    sub("updateCapture", [&](){
-	CameraEventType			type;
-	void				*data;
-
-	gp_camera_wait_for_event(_camera, _refreshDelay, &type, &data, _context);
-	if (type == GP_EVENT_FILE_ADDED)
-	  {
-	    PubSubKey key("newImageCaptured");
-	    CameraFilePath *fileInfos = static_cast<CameraFilePath*>(data);
-	    std::cout << "Capture !!!" << std::endl;
-	    std::cout <<fileInfos->name << " " << fileInfos->folder << std::endl;
-	    pub(key, fileInfos, _context, _camera);
-	  }	
-      });
-
     std::cout << "Camera initialize" << std::endl;
     return true;
   }
@@ -92,22 +77,39 @@ public:
 
     gp_camera_capture(_camera, GP_CAPTURE_IMAGE, &camera_file_path, _context);
 
-  // Code from here waits for camera to complete everything.
-  // Trying to take two successive captures without waiting
-  // will result in the camera getting randomly stuck.
-  int waittime = 100;
-  CameraEventType type;
-  void *data;
+    // Code from here waits for camera to complete everything.
+    // Trying to take two successive captures without waiting
+    // will result in the camera getting randomly stuck.
+    int waittime = 100;
+    CameraEventType type;
+    void *data;
 
-  while(1) {
-    gp_camera_wait_for_event(_camera, waittime, &type, &data, _context);
-    if (type == GP_EVENT_TIMEOUT) {
-      break;
-    }
-    else if (type == GP_EVENT_CAPTURE_COMPLETE) {
-      waittime = 10;
-    }
+    while(1)
+      {
+	gp_camera_wait_for_event(_camera, waittime, &type, &data, _context);
+	if (type == GP_EVENT_TIMEOUT) {
+	  break;
+	}
+	else if (type == GP_EVENT_CAPTURE_COMPLETE) {
+	  waittime = 10;
+	}
+      }
   }
+
+  void update()
+  {
+    CameraEventType			type;
+    void				*data;
+    
+    gp_camera_wait_for_event(_camera, _refreshDelay, &type, &data, _context);
+    if (type == GP_EVENT_FILE_ADDED)
+      {
+	PubSubKey key("newImageCaptured");
+	CameraFilePath *fileInfos = static_cast<CameraFilePath*>(data);
+	std::cout << "Capture !!!" << std::endl;
+	std::cout <<fileInfos->name << " " << fileInfos->folder << std::endl;
+	pub(key, fileInfos, _context, _camera);
+      }	
   }
 
   void setRefreshDelay(const unsigned int delay)

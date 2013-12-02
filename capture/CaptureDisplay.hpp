@@ -57,7 +57,6 @@ public:
   {
     al_set_target_backbuffer(_display);
     al_clear_to_color(al_map_rgb(0,255,0));
-    std::cout << _counter << std::endl;
     if (_counter <= 0.0f)
       {
 	_waitingImage->display();
@@ -74,9 +73,7 @@ public:
 
   void					newFrame(FrameInfo &infos)
   {
-    std::cout << "ca load" << std::endl;
     _currentImage = std::unique_ptr<Image>(new Image(infos.path));
-    std::cout << "ca a loade" << std::endl;
     _counter = _delay;
     _last = al_get_time();
     update();
