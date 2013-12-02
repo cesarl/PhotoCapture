@@ -5,8 +5,9 @@
 #include				<allegro5/allegro_opengl.h>
 #include				<allegro5/allegro_image.h>
 
-#include				 "PubSub.hpp"
-#include				 "CameraContext.hpp"
+#include				"PubSub.hpp"
+#include				"CameraContext.hpp"
+#include				"CaptureListener.hpp"
 
 class Core : public PubSub
 {
@@ -36,6 +37,8 @@ public:
     if (!al_install_mouse())
       return false;
     if (!_cameraContext.init())
+      return false;
+    if (!_captureListener.init())
       return false;
 
     _eventQueue = al_create_event_queue();
@@ -90,6 +93,7 @@ public:
 
 private:
   CameraCtx				_cameraContext;
+  CaptureListener			_captureListener;
   bool					_running;
   ALLEGRO_EVENT_QUEUE			*_eventQueue;
   ALLEGRO_TIMER				*_timer;

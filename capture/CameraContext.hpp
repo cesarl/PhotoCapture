@@ -65,14 +65,14 @@ public:
 	CameraEventType			type;
 	void				*data;
 
-	gp_camera_wait_for_event(_camera, 100, &type, &data, _context);
+	gp_camera_wait_for_event(_camera, _refeshDelay, &type, &data, _context);
 	if (type == GP_EVENT_FILE_ADDED)
 	  {
-	    // PubSubKey("capture")
-	    // pub()
+	    PubSubKey key("newImageCaptured");
+	    CameraFilePath *fileInfos = static_cast<CameraFilePath*>(data);
+	    pub(key, fileInfos, _context, _camera);
 	    std::cout << "Capture !!!" << std::endl;
-	    CameraFilePath *p = static_cast<CameraFilePath*>(data);
-	    std::cout << p->name << " " << p->folder << std::endl;
+	    std::cout <<fileInfos->name << " " << fileInfos->folder << std::endl;
 	  }	
       });
 
@@ -80,9 +80,20 @@ public:
     return true;
   }
 
+  void setRefreshDelay(const unsigned int delay)
+  {
+    _refeshDelay = delay;
+  }
+
+  unsigned int getRefreshDelay() const
+  {
+    return _refeshDelay;
+  }
+
 private:
   Camera				*_camera;
   GPContext				*_context;
+  unsigned int				_refeshDelay;
 private:
 };
 
