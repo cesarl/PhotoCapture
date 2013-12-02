@@ -122,12 +122,6 @@ public:
     sub("setDestinationFolder", [&](const std::string path){
 	setDestinationFolder(path);
       });
-
-    // for test purpose
-    PubSubKey key("setDestinationFolder");
-    const std::string testPath("/tmp/testFolder/");
-    pub(key, testPath);
-
     return true;
   }
 private:

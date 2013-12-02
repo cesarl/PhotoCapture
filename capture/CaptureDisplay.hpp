@@ -42,9 +42,6 @@ public:
 	newFrame(infos);
       });
 
-
-    //for test purposes
-    setWaitingImage("./assets/defaultWaitingPicture.png");
     return true;
   }
 
