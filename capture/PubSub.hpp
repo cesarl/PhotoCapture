@@ -115,8 +115,8 @@ public:
 
 		if (typeid(function) != *(callback.signature))
 		{
-			std::cerr << "PubSub error : Wrong pub call." << std::endl;
-			return;
+		  std::cerr << "PubSub error : Wrong pub call for " << name << "." << std::endl;
+		  return;
 		}
 		(*function)(args...);
 	}

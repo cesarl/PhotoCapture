@@ -34,7 +34,6 @@ static void				statusfunc (GPContext *context, const char *str, void *data)
   static_cast<void>(context);
 }
 
-
 class CameraCtx : public PubSub
 {
 public:
@@ -53,12 +52,16 @@ public:
     _context = gp_context_new();
     gp_context_set_error_func (_context, errorfunc, NULL);
     gp_context_set_status_func (_context, statusfunc, NULL);
+    gp_context_set_message_func(_context, statusfunc, NULL);
+    gp_camera_init(_camera, _context);
 
     // init subscriptions
 
-    sub("keyDown", [&](ALLEGRO_EVENT &event){
-	std::cout << "EVENT" << std::endl;
-	static_cast<void>(event);
+    sub("keyDown", [&](ALLEGRO_EVENT event){
+	if (event.keyboard.keycode == ALLEGRO_KEY_C)
+	  {
+	    capture();
+	  }
       });
 
     sub("updateCapture", [&](){
@@ -78,6 +81,32 @@ public:
 
     std::cout << "Camera initialize" << std::endl;
     return true;
+  }
+
+  void capture()
+  {
+    CameraFilePath camera_file_path;
+
+    strcpy(camera_file_path.folder, "/");
+
+    gp_camera_capture(_camera, GP_CAPTURE_IMAGE, &camera_file_path, _context);
+
+  // Code from here waits for camera to complete everything.
+  // Trying to take two successive captures without waiting
+  // will result in the camera getting randomly stuck.
+  int waittime = 100;
+  CameraEventType type;
+  void *data;
+
+  while(1) {
+    gp_camera_wait_for_event(_camera, waittime, &type, &data, _context);
+    if (type == GP_EVENT_TIMEOUT) {
+      break;
+    }
+    else if (type == GP_EVENT_CAPTURE_COMPLETE) {
+      waittime = 100;
+    }
+  }
   }
 
   void setRefreshDelay(const unsigned int delay)
