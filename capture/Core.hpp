@@ -9,6 +9,7 @@
 #include				"CameraContext.hpp"
 #include				"CaptureListener.hpp"
 #include				"CaptureDisplay.hpp"
+#include				"SlideshowDisplay.hpp"
 
 class Core : public PubSub
 {
@@ -42,6 +43,8 @@ public:
     if (!_captureListener.init())
       return false;
     if (!_captureDisplay.init())
+      return false;
+    if (!_slideshowDisplay.init())
       return false;
 
     _eventQueue = al_create_event_queue();
@@ -96,6 +99,7 @@ public:
 	  }
 	_cameraContext.update();
 	_captureDisplay.update();
+	_slideshowDisplay.update();
       }
   }
 
@@ -103,6 +107,7 @@ private:
   CameraCtx				_cameraContext;
   CaptureListener			_captureListener;
   CaptureDisplay			_captureDisplay;
+  SlideshowDisplay			_slideshowDisplay;
   bool					_running;
   ALLEGRO_EVENT_QUEUE			*_eventQueue;
   ALLEGRO_TIMER				*_timer;
