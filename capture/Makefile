@@ -1,18 +1,19 @@
-NAME		=	exec
+PKG_CONFIG_PATH := /usr/local/lib/pkgconfig:$(PKG_CONFIG_PATH)
+export PKG_CONFIG_PATH
 
-CC		=	g++-4.8
+NAME		=	exec `pkg-config --libs allegro-5.0 allegro_main-5.0`
+
+CC		=	g++
 
 RM		=	rm -f
 
-CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror
+CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror -O2
 
-CPPFLAGS	+=	-I.
-LDFLAGS		=	-L/usr/lib -L./vendors/ -lgphoto2 -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image -lGLU
-
-INC		=	-I/usr/include/allegro5
+CPPFLAGS	+=	-I. -I/usr/include -I/usr/local/include -I./mac/
+LDFLAGS		=	-L./mac/lib -L./vendors/ -lgphoto2.6 -lgphoto2_port -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image
 
 SRCS		=	main.cpp \
-			./vendors/cJSON.cpp
+				./vendors/cJSON.cpp
 
 OBJS		=	$(SRCS:.cpp=.o)
 
