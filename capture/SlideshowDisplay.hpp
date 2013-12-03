@@ -51,6 +51,10 @@ public:
 	toggleTestMode();
       });
 
+    sub("setSlideDelay", [&](int d){
+	_delay = (float)d / 1000.0f;
+      });
+
     _index = std::begin(_list);
 
     return true;

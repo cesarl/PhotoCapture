@@ -5,7 +5,10 @@ int main(void)
 {
   Core core;
 
-  core.init();
+  if (!core.init())
+    {
+      std::cerr << "Error at initialisation." << std::endl;
+    }
 
   // for test purposes
   //

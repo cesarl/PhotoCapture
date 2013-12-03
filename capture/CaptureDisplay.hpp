@@ -43,6 +43,10 @@ public:
 	setWaitingImage(path);
       });
 
+    sub("setCaptureDelay", [&](int d){
+	_delay = (float)d / 1000.0f;
+      });
+
     sub("newFrame", [&](FrameInfo infos){
 	newFrame(infos);
       });

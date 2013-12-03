@@ -45,10 +45,26 @@ public:
       {
 	std::cerr << "Error parsing config file " << configFilePath << "." << std::endl;
       }
-    std::cout << cJSON_PrintUnformatted(json) << std::endl;
 
     // set destination path
-    {
+    if (!setDestination(json))
+      {
+	std::cerr << "Destination error" << std::endl;
+	cJSON_Delete(json);
+	return false;
+      }
+
+    if (!setDelay(json))
+      {
+	std::cerr << "Setting delay error" << std::endl;
+      }
+
+    cJSON_Delete(json);
+    return true;
+  }
+private:
+  bool				setDestination(cJSON *json)
+  {
       cJSON *appPath;
       cJSON *folder;
       std::string path;
@@ -82,9 +98,55 @@ public:
 	  const std::string destinationPath(path);
 	  PubSub::pub(keyDestinationPath, destinationPath);
 	}
-    }
-    cJSON_Delete(json);
     return true;
+  }
+
+  bool				setDelay(cJSON *json)
+  {
+      cJSON *captureDelay;
+      cJSON *slideDelay;
+
+      captureDelay = cJSON_GetObjectItem(json, "delay-capture");
+      slideDelay = cJSON_GetObjectItem(json, "delay-slideshow");
+      if (captureDelay)
+	{
+	  char *str;
+	  std::string delay;
+
+	  str = cJSON_Print(captureDelay);
+	  if (str)
+	    {
+	      delay = &(str)[1];
+	      delay = delay.substr(0, delay.size() - 1);
+	      free(str);
+	    }
+	  if (delay.size() > 0)
+	    {
+	      PubSubKey key ("setCaptureDelay");
+	      PubSub::pub(key, std::atoi(delay.c_str()));
+	    }
+	}
+
+      if (slideDelay)
+	{
+	  char *str;
+	  std::string delay;
+
+	  str = cJSON_Print(slideDelay);
+	  if (str)
+	    {
+	      delay = &(str)[1];
+	      delay = delay.substr(0, delay.size() - 1);
+	      free(str);
+	    }
+	  if (delay.size() > 0)
+	    {
+	      PubSubKey key ("setSlideDelay");
+	      PubSub::pub(key, std::atoi(delay.c_str()));
+	    }
+	}
+
+      return true;
   }
 };
 
