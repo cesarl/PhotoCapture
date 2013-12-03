@@ -15,9 +15,11 @@ public:
     : _display(nullptr)
     , _waitingImage(new Image())
     , _currentImage(new Image())
+    , _testingImage(new Image())
     , _counter(0.0f)
     , _delay(3.0f)
     , _last(0.0f)
+    , _testing(false)
   {}
 
   virtual ~CaptureDisplay()
@@ -45,6 +47,16 @@ public:
 	newFrame(infos);
       });
 
+    sub("toggleTestMode", [&](){
+	_testing = !_testing;
+	if (_testing)
+	  {
+	    _testingImage = std::unique_ptr<Image>(new Image("./assets/test-mode.png"));
+	  }
+	else
+	  _testingImage = std::unique_ptr<Image>(new Image());
+      });
+
     return true;
   }
 
@@ -68,6 +80,7 @@ public:
 	_currentImage->display();
 	_last = al_get_time();
       }
+    _testingImage->displayMini();
     al_flip_display();
   }
 
@@ -83,9 +96,11 @@ private:
   ALLEGRO_DISPLAY			*_display;
   std::unique_ptr<Image>		_waitingImage;
   std::unique_ptr<Image>		_currentImage;
+  std::unique_ptr<Image>		_testingImage;
   float					_counter;
   float					_delay;
   float					_last;
+  bool					_testing;
 };
 
 #endif					//__CAPTURE_DISPLAY_HPP__

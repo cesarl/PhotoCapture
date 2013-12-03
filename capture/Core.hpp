@@ -95,6 +95,11 @@ public:
 	      {
 		PubSubKey key("keyDown");
 		pub(key, event);
+		if (event.keyboard.keycode == ALLEGRO_KEY_T)
+		  {
+		    PubSubKey testModeKey("toggleTestMode");
+		    pub(testModeKey);
+		  }
 	      }
 	  }
 	_cameraContext.update();

@@ -37,6 +37,20 @@ public:
 			  0);
   }
 
+  void displayMini()
+  {
+    if (!_loaded)
+      return;
+    al_draw_scaled_bitmap(_bmp,
+			  0, 0,
+			  al_get_bitmap_width(_bmp),
+			  al_get_bitmap_height(_bmp),
+			  0, 0,
+			  al_get_display_width(al_get_current_display()) / 5,
+			  al_get_display_height(al_get_current_display()) / 5,
+			  0);
+  }
+
   virtual ~Image()
   {
     if (_bmp)

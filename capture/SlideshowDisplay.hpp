@@ -15,9 +15,11 @@ public:
   SlideshowDisplay()
     : _display(nullptr)
     , _currentImage(new Image())
+    , _testingImage(new Image())
     , _counter(0.0f)
     , _delay(3.0f)
     , _last(0.0f)
+    , _testing(false)
   {}
 
   virtual ~SlideshowDisplay()
@@ -45,9 +47,36 @@ public:
 	existingFrame(infos);
       });
 
+    sub("toggleTestMode", [&](){
+	toggleTestMode();
+      });
+
     _index = std::begin(_list);
 
     return true;
+  }
+
+  void					toggleTestMode()
+  {
+    _testing = !_testing;
+    if (!_testing)
+      {
+	auto e = std::begin(_list);
+	while (e != std::end(_list))
+	  {
+	    auto t = e;
+	    ++e;
+	    if (t->second.test)
+	      _list.erase(t);
+	  }
+      }
+    if (_testing)
+      {
+	_testingImage = std::unique_ptr<Image>(new Image("./assets/test-mode.png"));
+      }
+    else
+      _testingImage = std::unique_ptr<Image>(new Image());
+    _index = std::begin(_list);
   }
 
   void					update()
@@ -68,6 +97,7 @@ public:
     float d = al_get_time() - _last;
     _counter -= d;
     _currentImage->display();
+    _testingImage->displayMini();
     _last = al_get_time();
 
     al_flip_display();
@@ -91,11 +121,13 @@ public:
 private:
   ALLEGRO_DISPLAY			*_display;
   std::unique_ptr<Image>		_currentImage;
+  std::unique_ptr<Image>		_testingImage;
   std::map<unsigned int, FrameInfo>	_list;
   float					_counter;
   float					_delay;
   float					_last;
   std::map<unsigned int, FrameInfo>::iterator	_index;
+  bool					_testing;
 };
 
 #endif					//__SLIDESHOW_DISPLAY_HPP__

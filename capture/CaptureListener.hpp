@@ -7,6 +7,7 @@
 #include				<dirent.h>
 #include				<sys/stat.h>
 #include				<fcntl.h>
+#include				<stdio.h>
 #include				<list>
 #include				<ctime>
 
@@ -112,6 +113,25 @@ public:
     closedir(dir);
   }
 
+  void					toggleTestMode()
+  {
+    _onTestMode = !_onTestMode;
+    if (!_onTestMode)
+      {
+	auto e = std::begin(_list);
+	while (e != std::end(_list))
+	  {
+	    auto t = e;
+	    ++e;
+	    if (t->test)
+	      {
+		remove(t->path.c_str());
+		_list.erase(t);
+	      }
+	  }
+      }
+  }
+
   bool					init()
   {
     sub("newImageCaptured", [&](CameraFilePath *infos, GPContext *context, Camera *camera){
@@ -120,6 +140,10 @@ public:
 
     sub("setDestinationFolder", [&](const std::string path){
 	setDestinationFolder(path);
+      });
+
+    sub("toggleTestMode", [&](){
+	toggleTestMode();
       });
     return true;
   }
