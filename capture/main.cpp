@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include "Core.hpp"
 
-int main(void)
+int main(int, char **)
 {
   Core core;
 
