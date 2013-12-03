@@ -8,3 +8,4 @@ exec
 *.so
 nw
 *.pak
+*.a
