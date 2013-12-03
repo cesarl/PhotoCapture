@@ -1,0 +1,16 @@
+{
+  "name": "FrameBox",
+  "description": "Simple file explorer.",
+  "version": "0.1.2beta",
+  "main": "index.html",
+  "window": {
+    "toolbar": true,
+    "width": 1200,
+    "height": 500
+  },
+  "dependencies":
+  {
+	"jade" : "*",
+	"underscore" : "*"
+  }
+}

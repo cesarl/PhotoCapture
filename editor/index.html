@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>File Explorer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="js/form2js.js"></script>
+<script type="text/javascript" src="js/jquery.toObject.js"></script>
+<script type="text/javascript" src="js/js2form.js"></script>
+<script type="text/javascript" src="js/json2.js"></script>
+<script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="text-muted">FrameBox</h1>
+    <p class="lead">Fill the form then click on the <i>save button</i> to save your settings.</p>    
+  </div>
+  <div class="row">
+    <form id="form">
+      <fieldset>
+	<legend>Locations</legend>
+	<label>Application path</label>
+	<span class="help-block">The folder of the application.</span>
+	<input type="text" placeholder="" name="application-path">
+
+	<label>Destination folder</label>
+	<span class="help-block">The name of the destination folder for the images.</span>
+	<input type="text" placeholder="" name="destination-folder">
+
+
+	<legend>Capture settings</legend>
+	<label>Waiting image</label>
+	<span class="help-block">The image path of the waiting image (image displayed between captures).</span>
+	<input type="text" placeholder="" name="waiting-path">
+
+	<label>Delay capture</label>
+	<span class="help-block">Duration in millisecond for the new capture display. (2s = 2000). </span>
+	<input type="number" placeholder="" name="delay-capture">
+
+	<label>Delay slideshow</label>
+	<span class="help-block">Delay in millisecond between image in slideshow. (2s = 2000). </span>
+	<input type="number" placeholder="" name="delay-slideshow">
+
+
+	<legend>Online gallery</legend>
+	<label>Gallery name</label>
+	<span class="help-block">Name of the gallery for the website</span>
+	<input type="text" placeholder="" name="gallery-name">
+
+	<label>Gallery subtitle</label>
+	<span class="help-block">Subtitle of the gallery for the website</span>
+	<input type="text" placeholder="" name="gallery-subtitle">
+
+	<label>Gallery sub-domain</label>
+	<span class="help-block">Type "my-domain" for a gallery at "http://my-domain.framebox.net"</span>
+	<input type="text" placeholder="" name="gallery-sub-domain">
+	<br/>
+	<button class="btn btn-lg btn-success">Save</button>
+      </fieldset>
+    </form>
+  </div>
+</div>
+</body>
+</html>
