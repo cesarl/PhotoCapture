@@ -53,7 +53,7 @@ public:
     close(fd);
 
     // register image information in list
-    FrameInfo frameInfo(path, id - 1, _onTestMode);
+    FrameInfo frameInfo(path, id, _onTestMode);
     _list.push_back(frameInfo);
 
     // inform others about new frame

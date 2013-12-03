@@ -3,7 +3,7 @@
 
 #include				<allegro5/allegro.h>
 #include				<memory>
-#include				<vector>
+#include				<map>
 #include				"PubSub.hpp"
 #include				"Log.hpp"
 #include				"Image.hpp"
@@ -18,7 +18,6 @@ public:
     , _counter(0.0f)
     , _delay(3.0f)
     , _last(0.0f)
-    , _index(0)
   {}
 
   virtual ~SlideshowDisplay()
@@ -46,6 +45,8 @@ public:
 	existingFrame(infos);
       });
 
+    _index = std::begin(_list);
+
     return true;
   }
 
@@ -55,16 +56,12 @@ public:
     al_clear_to_color(al_map_rgb(0,0,0));
     if (_counter <= 0.0f)
       {
-	if (_index >= _list.size() - 1)
-	  {
-	    _index = 0;
-	  }
-	else
+	if (_index == std::end(_list))
+	  _index = std::begin(_list);
+	if (_index != std::end(_list))
+	  _currentImage = std::unique_ptr<Image>(new Image(_index->second.path));
+	if (_list.size() != 0 && _index != std::end(_list))
 	  ++_index;
-	if (_list.size() != 0)
-	  {
-	    _currentImage = std::unique_ptr<Image>(new Image(_list[_index].path));
-	  }
 	_counter = _delay;
       }
 
@@ -78,7 +75,7 @@ public:
 
   void					newFrame(FrameInfo &infos)
   {
-    _list.push_back(infos);
+    _list.insert(std::make_pair(infos.number, infos));
     _currentImage = std::unique_ptr<Image>(new Image(infos.path));
     _counter = _delay;
     _last = al_get_time();
@@ -87,18 +84,18 @@ public:
 
   void					existingFrame(FrameInfo &infos)
   {
-    _list.push_back(infos);
-    std::cout << "existingFrame" << std::endl;
+    _list.insert(std::make_pair(infos.number, infos));
+    _index = std::begin(_list);
   }
 
 private:
   ALLEGRO_DISPLAY			*_display;
   std::unique_ptr<Image>		_currentImage;
-  std::vector<FrameInfo>		_list;
+  std::map<unsigned int, FrameInfo>	_list;
   float					_counter;
   float					_delay;
   float					_last;
-  unsigned int				_index;
+  std::map<unsigned int, FrameInfo>::iterator	_index;
 };
 
 #endif					//__SLIDESHOW_DISPLAY_HPP__
