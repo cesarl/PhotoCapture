@@ -3,6 +3,9 @@
 
 int main(int, char **)
 {
+
+  system("killall PTPCamera");
+
   Core core;
 
   if (!core.init())

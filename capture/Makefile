@@ -1,4 +1,4 @@
-PKG_CONFIG_PATH := /usr/local/lib/pkgconfig:$(PKG_CONFIG_PATH)
+PKG_CONFIG_PATH := ./mac/allegroLib/:$(PKG_CONFIG_PATH)
 export PKG_CONFIG_PATH
 
 NAME		=	exec `pkg-config --libs allegro-5.0 allegro_main-5.0`
@@ -10,7 +10,7 @@ RM		=	rm -f
 CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror -O2
 
 CPPFLAGS	+=	-I. -I/usr/include -I/usr/local/include -I./mac/
-LDFLAGS		=	-L./mac/lib -L./vendors/ -lgphoto2.6 -lgphoto2_port -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image
+LDFLAGS		=	-L./vendors/ -L./mac/lib/ -L./mac/allegroLib/ -lgphoto2.6 -lgphoto2_port -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image
 
 SRCS		=	main.cpp \
 				./vendors/cJSON.cpp
