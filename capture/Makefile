@@ -7,11 +7,12 @@ RM		=	rm -f
 CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror
 
 CPPFLAGS	+=	-I.
-LDFLAGS		=	-L/usr/lib -lgphoto2 -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image -lGLU
+LDFLAGS		=	-L/usr/lib -L./vendors/ -lgphoto2 -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image -lGLU
 
 INC		=	-I/usr/include/allegro5
 
-SRCS		=	main.cpp
+SRCS		=	main.cpp \
+			./vendors/cJSON.cpp
 
 OBJS		=	$(SRCS:.cpp=.o)
 

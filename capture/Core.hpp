@@ -10,6 +10,7 @@
 #include				"CaptureListener.hpp"
 #include				"CaptureDisplay.hpp"
 #include				"SlideshowDisplay.hpp"
+#include				"OptionParser.hpp"
 
 class Core : public PubSub
 {
@@ -45,6 +46,8 @@ public:
     if (!_captureDisplay.init())
       return false;
     if (!_slideshowDisplay.init())
+      return false;
+    if (!_optionParser.init())
       return false;
 
     _eventQueue = al_create_event_queue();
@@ -113,6 +116,7 @@ private:
   CaptureListener			_captureListener;
   CaptureDisplay			_captureDisplay;
   SlideshowDisplay			_slideshowDisplay;
+  OptionParser				_optionParser;
   bool					_running;
   ALLEGRO_EVENT_QUEUE			*_eventQueue;
   ALLEGRO_TIMER				*_timer;

@@ -1,0 +1,10 @@
+{
+	"application-path": "/home/cesar/Dropbox/documents/photoCapture/capture/",
+	"destination-folder": "gallerie",
+	"waiting-path": "waiting.png",
+	"delay-capture": "1000",
+	"delay-slideshow": "1000",
+	"gallery-name": "",
+	"gallery-subtitle": "",
+	"gallery-sub-domain": ""
+}
