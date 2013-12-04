@@ -1,9 +1,9 @@
 {
 	"application-path": "./",
-	"destination-folder": "../GALERIE",
+	"destination-folder": "../LOL",
 	"waiting-path": "waiting.png",
-	"delay-capture": "100",
-	"delay-slideshow": "20",
+	"delay-capture": "3000",
+	"delay-slideshow": "3000",
 	"gallery-name": "",
 	"gallery-subtitle": "",
 	"gallery-sub-domain": ""
