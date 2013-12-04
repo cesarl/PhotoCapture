@@ -1,0 +1,19 @@
+#!/bin/bash
+cd "${0%/*}"
+
+echo "Installation :"
+sudo cp -rf ./CAPTURE/install_dependencies/opt /.;
+
+
+sudo mkdir /System/Library/StartupItems/FrameBoxCaptureAutoLaunch/
+sudo cp -rf ./CAPTURE/install_dependencies/fswatch /usr/bin/.
+sudo cp -rf ./CAPTURE/install_dependencies/autoLaunch.sh /System/Library/StartupItems/FrameBoxCaptureAutoLaunch/.
+
+while true; do
+    read -p "Do you want to reboot for auto launch ?" yn
+    case $yn in
+        [Yy]* ) sudo shutdown -r now; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
