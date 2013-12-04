@@ -18,7 +18,7 @@ OBJS		=	$(SRCS:.cpp=.o)
 
 ECHO		=	echo -e
 
-all		:	$(NAME)
+all			:	$(NAME)
 
 $(NAME)		:	$(OBJS)
 			@$(CC) $(OBJS) -o $(NAME) $(INC) $(LDFLAGS)
