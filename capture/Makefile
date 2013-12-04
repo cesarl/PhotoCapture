@@ -1,16 +1,15 @@
 PKG_CONFIG_PATH := ./mac/allegroLib/:$(PKG_CONFIG_PATH)
 export PKG_CONFIG_PATH
 
-NAME		=	exec `pkg-config --libs allegro-5.0 allegro_main-5.0`
+NAME	=	FrameBoxCapture `pkg-config --libs allegro-5.0 allegro_main-5.0`
 
 CC		=	g++
 
 RM		=	rm -f
 
 CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror -O2
-
-CPPFLAGS	+=	-I. -I/usr/include -I/usr/local/include -I./mac/
-LDFLAGS		=	-L./vendors/ -L./mac/lib/ -L./mac/allegroLib/ -lgphoto2.6 -lgphoto2_port -lallegro -lallegro_dialog -lallegro_primitives -lallegro_ttf -lallegro_font -lallegro_image
+CPPFLAGS	+=	-I. -I/usr/include -I/usr/local/include -I./vendors
+LDFLAGS		=	-L./libs -lgphoto2.6 -lgphoto2_port.10 -lallegro -lallegro_dialog -lallegro_font -lallegro_image -lusb
 
 SRCS		=	main.cpp \
 				./vendors/cJSON.cpp

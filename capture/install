@@ -1,0 +1,5 @@
+#!/bin/bash
+cd "${0%/*}"
+
+echo "Installation :"
+sudo cp -rf ./install_dependencies/opt /.;
