@@ -9,7 +9,7 @@ RM		=	rm -f
 
 CPPFLAGS	=	-std=c++0x -W -Wextra -Wall -Werror -O2
 CPPFLAGS	+=	-I. -I/usr/include -I/usr/local/include -I./vendors
-LDFLAGS		=	-L./libs -lgphoto2.6 -lgphoto2_port.10 -lallegro -lallegro_dialog -lallegro_font -lallegro_image -lusb
+LDFLAGS		=	-L./../libs -lgphoto2.6 -lgphoto2_port.10 -lallegro -lallegro_dialog -lallegro_font -lallegro_image -lusb
 
 SRCS		=	main.cpp \
 				./vendors/cJSON.cpp

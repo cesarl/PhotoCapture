@@ -3,3 +3,8 @@ cd "${0%/*}"
 
 echo "Installation :"
 sudo cp -rf ./install_dependencies/opt /.;
+
+
+sudo mkdir /System/Library/StartupItems/FrameBoxCaptureAutoLaunch/
+sudo cp -rf ./install_dependencies/fswatch /usr/bin/.
+sudo cp -rf ./install_dependencies/autoLaunch.sh /System/Library/StartupItems/FrameBoxCaptureAutoLaunch/.

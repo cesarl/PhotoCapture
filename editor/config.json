@@ -1,9 +1,9 @@
 {
-	"application-path": "/Users/dominique/Desktop/PhotoCapture/capture/",
-	"destination-folder": "gallerie",
+	"application-path": "./",
+	"destination-folder": "../GALERIE",
 	"waiting-path": "waiting.png",
-	"delay-capture": "1000",
-	"delay-slideshow": "1000",
+	"delay-capture": "100",
+	"delay-slideshow": "20",
 	"gallery-name": "",
 	"gallery-subtitle": "",
 	"gallery-sub-domain": ""
